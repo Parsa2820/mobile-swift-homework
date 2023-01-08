@@ -34,7 +34,7 @@ We have implemented the project using proper design patterns and principles in o
 Although the project is a command line application, we have added some screenshots to show how it works.
 
 <div align="center">
-    <img src="Screenshots/1.png" width="60%" />
-    <img src="Screenshots/2.png" width="60%" />
-    <img src="Screenshots/3.png" width="60%" />
+    <img src="Screenshots/1.png" width="80%" />
+    <img src="Screenshots/2.png" width="80%" />
+    <img src="Screenshots/3.png" width="80%" />
 </div>
