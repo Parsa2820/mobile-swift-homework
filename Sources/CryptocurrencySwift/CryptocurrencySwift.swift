@@ -17,12 +17,28 @@ public struct CryptocurrencySwift {
     ])
 
     static let viewCryptocurrenciesMenu: Menu = Menu(title: "Cryptocurrencies", items: [
+        MenuItem(title: "Show Available Currencies") {
+            let cryptocurrencies = DataHandler().getCryptocurrenciesList()
+            for cryptocurrency in cryptocurrencies {
+                print(cryptocurrency, terminator: " ")
+            }
+            print()
+        },
         MenuItem(title: "Show Favorite Currencies") {
-            print("Favorite Currencies: \(configMan.load().favoriteCurrencies)")
+            let favoriteCurrencies = configMan.load().favoriteCurrencies
+            let prices = DataHandler().getCryptocurrenciesTodayPrice(cryptocurrencies: favoriteCurrencies)
+            for (currency, price) in prices {
+                print("\(currency): \(price)")
+            }
         },
         MenuItem(title: "Add Favorite Currency") {
             print("Enter new favorite currency: ", terminator: "")
             let newFavoriteCurrency = readLine() ?? ""
+            let availableCurrencies = DataHandler().getCryptocurrenciesList()
+            if !availableCurrencies.contains(newFavoriteCurrency) {
+                print("Invalid currency")
+                return
+            }
             var config = configMan.load()
             config.favoriteCurrencies.append(newFavoriteCurrency)
             configMan.save(config: config)

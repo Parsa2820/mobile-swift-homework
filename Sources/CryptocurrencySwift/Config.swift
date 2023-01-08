@@ -15,7 +15,7 @@ class ConfigMan {
     private let fileManager: FileManager = FileManager.default
     private let decoder: JSONDecoder = JSONDecoder()
     private let encoder: JSONEncoder = JSONEncoder()
-    private let defaultConfig: Config = Config(favoriteCurrencies: ["BTC", "ETH", "XRP"], username: "John Doe")
+    private let defaultConfig: Config = Config(favoriteCurrencies: ["BTC/USD", "ETH/USD", "USDT/USD"], username: "John Doe")
 
     init() {
         if !fileManager.fileExists(atPath: file) {
