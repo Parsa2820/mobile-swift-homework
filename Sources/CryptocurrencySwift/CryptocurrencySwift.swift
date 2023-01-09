@@ -18,15 +18,57 @@ public struct CryptocurrencySwift {
 
     static let viewCryptocurrenciesMenu: Menu = Menu(title: "Cryptocurrencies", items: [
         MenuItem(title: "Show Available Currencies") {
-            let cryptocurrencies = DataHandler().getCryptocurrenciesList()
+            let cryptocurrencies: [String]
+            do {
+                cryptocurrencies = try DataHandler().getCryptocurrenciesList()
+            } catch {
+                print("Error getting cryptocurrencies list: \(error)")
+                return
+            }
             for cryptocurrency in cryptocurrencies {
                 print(cryptocurrency, terminator: " ")
             }
             print()
         },
+        MenuItem(title: "Show Currency Details") {
+            print("Enter currency: ", terminator: "")
+            let currency = readLine() ?? ""
+            let availableCurrencies: [String]
+            do {
+                availableCurrencies = try DataHandler().getCryptocurrenciesList()
+            } catch {
+                print("Error getting cryptocurrencies list: \(error)")
+                return
+            }
+            if !availableCurrencies.contains(currency) {
+                print("Invalid currency")
+                return
+            }
+            print("Enter start date (YYYY-MM-DD): ", terminator: "")
+            let startDate = readLine() ?? ""
+            print("Enter end date (YYYY-MM-DD): ", terminator: "")
+            let endDate = readLine() ?? ""
+            let details: [String: String]
+            do {
+                details = try DataHandler().getCryptocurrencyDetails(currency: currency, startDate: startDate, endDate: endDate)
+            } catch {
+                print("Error getting cryptocurrency details: \(error)")
+                return
+            }
+            print(currency)
+            for (date, price) in details {
+                print("\(date): \(price)")
+            }
+        },
         MenuItem(title: "Show Favorite Currencies") {
             let favoriteCurrencies = configMan.load().favoriteCurrencies
-            let prices = DataHandler().getCryptocurrenciesTodayPrice(cryptocurrencies: favoriteCurrencies)
+            let prices: [String: String]
+            do {
+                prices = try DataHandler().getCryptocurrenciesTodayPrice(cryptocurrencies: favoriteCurrencies)
+            } catch {
+                print("Error getting cryptocurrencies today price: \(error)")
+                return
+            }
             for (currency, price) in prices {
                 print("\(currency): \(price)")
             }
@@ -34,7 +76,13 @@ public struct CryptocurrencySwift {
         MenuItem(title: "Add Favorite Currency") {
             print("Enter new favorite currency: ", terminator: "")
             let newFavoriteCurrency = readLine() ?? ""
-            let availableCurrencies = DataHandler().getCryptocurrenciesList()
+            let availableCurrencies: [String]
+            do {
+                availableCurrencies = try DataHandler().getCryptocurrenciesList()
+            } catch {
+                print("Error getting cryptocurrencies list: \(error)")
+                return
+            }
             if !availableCurrencies.contains(newFavoriteCurrency) {
                 print("Invalid currency")
                 return
