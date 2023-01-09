@@ -1,3 +1,4 @@
+import Foundation
 
 @main
 public struct CryptocurrencySwift {
@@ -46,8 +47,33 @@ public struct CryptocurrencySwift {
             }
             print("Enter start date (YYYY-MM-DD): ", terminator: "")
             let startDate = readLine() ?? ""
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let startDateObject = dateFormatter.date(from: startDate)
+            let today = Date()
+            if startDateObject == nil {
+                print("Invalid start date")
+                return
+            }
+            if startDateObject! > today {
+                print("Start date cannot be in the future")
+                return
+            }
             print("Enter end date (YYYY-MM-DD): ", terminator: "")
             let endDate = readLine() ?? ""
+            let endDateObject = dateFormatter.date(from: endDate)
+            if endDateObject == nil {
+                print("Invalid end date")
+                return
+            }
+            if endDateObject! > today {
+                print("End date cannot be in the future")
+                return
+            }
+            if endDateObject! < startDateObject! {
+                print("End date cannot be before start date")
+                return
+            }
             let details: [String: String]
             do {
                 details = try DataHandler().getCryptocurrencyDetails(currency: currency, startDate: startDate, endDate: endDate)
